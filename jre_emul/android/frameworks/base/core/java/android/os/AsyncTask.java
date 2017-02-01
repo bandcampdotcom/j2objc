@@ -35,6 +35,8 @@ import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.j2objc.annotations.RetainedWith;
+
 /**
  * <p>AsyncTask enables proper and easy use of the UI thread. This class allows to
  * perform background operations and publish results on the UI thread without
@@ -208,7 +210,9 @@ public abstract class AsyncTask<Params, Progress, Result> {
 
     private static volatile Executor sDefaultExecutor = SERIAL_EXECUTOR;
 
+    @RetainedWith
     private final WorkerRunnable<Params, Result> mWorker;
+    @RetainedWith
     private final FutureTask<Result> mFuture;
 
     private volatile Status mStatus = Status.PENDING;
@@ -305,9 +309,10 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     private native Result postResult(Result result) /*-[
-        AndroidOsAsyncTask __block *blockSelf = self;
+        AndroidOsAsyncTask __block *blockSelf = [self retain];
         dispatch_async(dispatch_get_main_queue(), ^{
             [blockSelf finishWithId:result];
+            [blockSelf release];
         });
         return result;
     ]-*/;
