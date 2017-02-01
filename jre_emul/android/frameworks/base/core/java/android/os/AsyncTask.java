@@ -309,10 +309,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     private native Result postResult(Result result) /*-[
-        AndroidOsAsyncTask __block *blockSelf = [self retain];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [blockSelf finishWithId:result];
-            [blockSelf release];
+            [self finishWithId:result];
         });
         return result;
     ]-*/;
@@ -616,9 +614,8 @@ public abstract class AsyncTask<Params, Progress, Result> {
      */
     protected native final void publishProgress(Progress... values) /*-[
         if (!AndroidOsAsyncTask_isCancelled(self)) {
-            AndroidOsAsyncTask __block *blockSelf = self;
             dispatch_async(dispatch_get_main_queue(), ^{
-                [blockSelf onProgressUpdateWithNSObjectArray:values];
+                [self onProgressUpdateWithNSObjectArray:values];
             });
         }
     ]-*/;
