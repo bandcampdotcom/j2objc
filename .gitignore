@@ -7,6 +7,7 @@ Gemfile.lock
 # Build Output
 **/build_result/
 dist/
+j2objc-*.zip
 
 # Xcode Generated Files
 **/project.xcworkspace/
